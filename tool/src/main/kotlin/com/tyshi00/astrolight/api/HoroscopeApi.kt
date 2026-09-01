@@ -77,7 +77,9 @@ class HoroscopeApi {
         val pEnd = html.indexOf("</p>", pTagClose)
         if (pEnd < 0) return fallbackExtract(html)
 
-        var text = stripHtmlTags(html.substring(pTagClose + 1, pEnd))
+        var body = html.substring(pTagClose + 1, pEnd)
+        body = stripUpsellBanners(body)
+        var text = stripHtmlTags(body)
         text = stripDatePrefix(text)
         return text.trim()
     }
@@ -92,6 +94,15 @@ class HoroscopeApi {
         if (ogMatch2 != null) return stripDatePrefix(ogMatch2.groupValues[1].trim())
 
         return ""
+    }
+
+    private fun stripUpsellBanners(html: String): String {
+        // The monthly page embeds a promo link mid-paragraph whose visible text is
+        // "<Month> Premium Horoscope" plus ad copy. Drop the whole anchor block.
+        return html.replace(
+            Regex("""<a\b[^>]*(?:upsell-banner|store\.horoscope\.com)[^>]*>.*?</a>""", RegexOption.DOT_MATCHES_ALL),
+            "",
+        )
     }
 
     private fun stripHtmlTags(html: String): String {
