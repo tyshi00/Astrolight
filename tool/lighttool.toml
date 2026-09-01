@@ -1,0 +1,7 @@
+[tool]
+id = "com.tyshi00.astrolight"
+label = "AstroLight"
+versionCode = 1
+versionName = "0.1.0"
+permissions = ["android.permission.INTERNET"]
+serverPackage = "com.lightos"
