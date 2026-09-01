@@ -25,15 +25,15 @@ Built with the Light SDK for LightOS. Horoscopes are fetched online when connect
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/Astrolight\_homescreen\_1.png" width="180" />
-  <img src="docs/screenshots/Astrolight\_homescreen\_2.png" width="180" />
-  <img src="docs/screenshots/Astrolight\_homescreen\_3.png" width="180" />
+  <img src="docs/screenshots/Astrolight_homescreen_1.png" width="180" />
+  <img src="docs/screenshots/Astrolight_homescreen_2.png" width="180" />
+  <img src="docs/screenshots/Astrolight_homescreen_3.png" width="180" />
 </p>
 <p align="center">
-  <img src="docs/screenshots/Astrolight\_compatability\_1.png" width="180" />
-  <img src="docs/screenshots/Astrolight\_compatability\_2.png" width="180" />
-  <img src="docs/screenshots/Astrolight\_settings\_1.png" width="180" />
-  <img src="docs/screenshots/Astrolight\_settings\_2.png" width="180" />
+  <img src="docs/screenshots/Astrolight_compatability_1.png" width="180" />
+  <img src="docs/screenshots/Astrolight_compatability_2.png" width="180" />
+  <img src="docs/screenshots/Astrolight_settings_1.png" width="180" />
+  <img src="docs/screenshots/Astrolight_settings_2.png" width="180" />
 </p>
 
 ## Build
@@ -41,8 +41,8 @@ Built with the Light SDK for LightOS. Horoscopes are fetched online when connect
 Requires the Light SDK GitHub Packages token. Add your credentials to `local.properties` in the project root:
 
 ```
-gpr.user=YOUR\_GITHUB\_USERNAME
-gpr.key=YOUR\_GITHUB\_TOKEN
+gpr.user=YOUR_GITHUB_USERNAME
+gpr.key=YOUR_GITHUB_TOKEN
 ```
 
 Build and install:
