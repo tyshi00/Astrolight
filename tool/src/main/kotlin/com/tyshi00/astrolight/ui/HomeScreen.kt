@@ -35,6 +35,7 @@ import com.thelightphone.sdk.ui.LightThemeTokens
 import com.thelightphone.sdk.ui.LightTopBar
 import com.thelightphone.sdk.ui.LightTopBarCenter
 import com.thelightphone.sdk.ui.gridUnitsAsDp
+import com.thelightphone.sdk.ui.lightClickable
 import com.tyshi00.astrolight.api.HoroscopeApi
 import com.tyshi00.astrolight.R
 import com.tyshi00.astrolight.data.AstroLightDatabase
@@ -55,6 +56,7 @@ private const val TAG = "AstroLight"
 data class HomeState(
     val hasDOB: Boolean = false,
     val activeLabel: String = "",
+    val dobCount: Int = 0,
     val currentDate: String = "",
 
     // Western sign
@@ -122,6 +124,7 @@ class HomeViewModel(private val repo: AstroLightRepository) : LightViewModel<Uni
             val hasDOB = repo.hasDOB()
             val profile = repo.getProfile()
             val activeLabel = repo.getActiveLabel()
+            val dobCount = repo.getDOBCount()
 
             val tz = TimeZone.getDefault()
             val now = Calendar.getInstance(tz)
@@ -143,6 +146,7 @@ class HomeViewModel(private val repo: AstroLightRepository) : LightViewModel<Uni
                 _state.value = HomeState(
                     hasDOB = true,
                     activeLabel = activeLabel,
+                    dobCount = dobCount,
                     currentDate = dateFmt.format(now.time),
                     showWestern = showWestern,
                     signName = "${sign.symbol} ${sign.name}",
@@ -188,6 +192,7 @@ class HomeViewModel(private val repo: AstroLightRepository) : LightViewModel<Uni
             } else {
                 _state.value = HomeState(
                     hasDOB = false,
+                    dobCount = dobCount,
                     currentDate = dateFmt.format(now.time),
                     showWestern = showWestern,
                     showChinese = showChinese,
@@ -196,6 +201,17 @@ class HomeViewModel(private val repo: AstroLightRepository) : LightViewModel<Uni
                     showMonthly = showMonthly,
                 )
             }
+        }
+    }
+
+    /** Advance to the next saved date of birth and reload the screen for it. */
+    fun cycleProfile() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val count = repo.getDOBCount()
+            if (count <= 1) return@launch
+            val next = (repo.getActiveDOBIndex() + 1) % count
+            repo.setActiveDOBIndex(next)
+            refresh()
         }
     }
 
@@ -282,13 +298,15 @@ class HomeScreen(sealedActivity: SealedLightActivity) :
                         )
                     }
                 } else {
-                    LightScrollView(
+                    // Date + profile header, kept above the scroll area so it
+                    // stays centered under the "AstroLight" top-bar title (the
+                    // scroll view reserves a scrollbar gutter on the right) and
+                    // so the profile toggle is always visible.
+                    Column(
                         modifier = Modifier
-                            .weight(1f)
                             .fillMaxWidth()
                             .padding(horizontal = 1f.gridUnitsAsDp()),
                     ) {
-                        // Date header
                         LightText(
                             text = state.currentDate,
                             variant = LightTextVariant.Detail,
@@ -297,19 +315,39 @@ class HomeScreen(sealedActivity: SealedLightActivity) :
                             modifier = Modifier.fillMaxWidth(),
                         )
                         if (state.activeLabel.isNotEmpty()) {
+                            val canCycle = state.dobCount > 1
                             LightText(
-                                text = state.activeLabel,
+                                text = if (canCycle) "‹ ${state.activeLabel} ›" else state.activeLabel,
                                 variant = LightTextVariant.Fine,
-                                lighten = true,
+                                // Full-contrast + underlined when tappable so it
+                                // reads as interactive; dimmed like before otherwise.
+                                lighten = !canCycle,
+                                underline = canCycle,
                                 align = TextAlign.Center,
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .then(
+                                        if (canCycle) {
+                                            Modifier.lightClickable(onClickLabel = "Switch profile") {
+                                                viewModel.cycleProfile()
+                                            }
+                                        } else {
+                                            Modifier
+                                        },
+                                    )
                                     .padding(bottom = 1f.gridUnitsAsDp()),
                             )
                         } else {
                             Spacer(modifier = Modifier.height(1f.gridUnitsAsDp()))
                         }
+                    }
 
+                    LightScrollView(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 1f.gridUnitsAsDp()),
+                    ) {
                         // Daily horoscope
                         if (state.showDaily) {
                             SectionHeader("Today")

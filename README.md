@@ -18,9 +18,11 @@ Built with the Light SDK for LightOS. Horoscopes are fetched online when connect
 
 **Chinese Zodiac Profile** -- Your animal sign and elemental modifier (Wood, Fire, Earth, Metal, Water) with traits, strengths, lucky numbers, and colors. Determined by birth year using the traditional 60-year Sexagenary cycle.
 
+**Multiple Profiles** -- Save up to 5 dates of birth for yourself and loved ones. When more than one is saved, the label under the date on the home screen becomes a toggle -- tap it to cycle through profiles and the whole screen updates with that person's sign and readings, no trip to Settings needed.
+
 **Compatibility Checker** -- Enter another person's birthday to compare your Western and Chinese zodiac compatibility side by side. Element harmony, trine groups, clash pairs, and an overall read.
 
-**Settings** -- Toggle each section on or off. Invert colors (dark mode is the default, matching LightOS). Enter up to 5 dates of birth so you can quickly switch between your horoscope and your loved ones' horoscopes. Tap any saved entry to make it active, and the home screen updates with their sign and readings.
+**Settings** -- Toggle each section on or off. Invert colors (dark mode is the default, matching LightOS). Manage your saved dates of birth and pick which one is active.
 
 ## Screenshots
 

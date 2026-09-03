@@ -222,8 +222,16 @@ class DOBEntryScreen(
                                 }
                                 .padding(vertical = 0.75f.gridUnitsAsDp()),
                         )
+                        if (state.count > 1) {
+                            LightText(
+                                text = "Tap the profile label under the date on the home screen to cycle through profiles.",
+                                variant = LightTextVariant.Fine,
+                                lighten = true,
+                                modifier = Modifier.padding(bottom = 0.5f.gridUnitsAsDp()),
+                            )
+                        }
                         LightText(
-                            text = "You can add up to 5 dates of birth (${state.count} of 5)",
+                            text = "You can add up to 5 dates of birth (${state.count} of 5).",
                             variant = LightTextVariant.Fine,
                             lighten = true,
                         )
